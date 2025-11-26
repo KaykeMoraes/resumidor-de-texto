@@ -1,0 +1,1 @@
+# resumidor-de-texto
