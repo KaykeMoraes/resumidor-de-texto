@@ -11,9 +11,12 @@ pub async fn run() {
         println!("Digite 0 para sair\nDigite 1 se quiser resumir texto de um pdf\nDigite 2 se quiser resumir um texto de um arquivo .txt");
         print!("Opcao: ");
         let _ = io::stdout().flush();
+        
         let mut option = String::new();
         stdin().read_line(&mut option).expect("Erro ao ler a opcao.");
+        
         let option: u8 = option.trim().parse().unwrap();
+        
         match option {
             0 => {
                 println!("Saindo..."); 
