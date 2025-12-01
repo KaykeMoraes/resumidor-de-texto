@@ -1,21 +1,20 @@
-FROM rustlang/rust:nightly AS builder
-WORKDIR /usr/src/app
+FROM rustlang/rust:nightly AS builder 
+WORKDIR /usr/src/app 
 
-COPY Cargo.toml Cargo.lock ./
+COPY Cargo.toml Cargo.lock ./ 
 COPY src ./src
 
-RUN cargo build --release
+RUN cargo build --release 
 
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim 
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
-    libssl-dev ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+libssl-dev ca-certificates \ 
+&& rm -rf /var/lib/apt/lists/* 
 
-COPY --from=builder /usr/src/app/target/release/resumidor-de-pdf .
+COPY --from=builder /usr/src/app/target/release/resumidor-de-pdf . 
 
-COPY .env .env
+COPY .env .env 
 
-CMD ["./resumidor-de-pdf"]
-
+CMD ["./resumidor-de-pdf"] 

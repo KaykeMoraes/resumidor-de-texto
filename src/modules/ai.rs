@@ -28,6 +28,12 @@ struct AIResponse {
     pub candidates: Option<Vec<Candidate>>
 }
 
+impl Default for AI {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl AI {
     pub fn new() -> Self {
         dotenv().ok();
@@ -38,26 +44,26 @@ impl AI {
     }
 }
 
-pub async fn summarize_text(prompt: String, ai: &AI) -> Result<String, anyhow::Error> {
+pub async fn summarize_text(prompt: &String, ai: &AI) -> Result<String, anyhow::Error> {
     let chat_request = json!(
         {
             "system_instruction": {
-              "parts": [
-                {
-                  "text": "Você é um resumidor de textos. Retorne sempre um texto que seja não tão grande e de fácil leitura."
-                }
-              ]
+                "parts": [
+                    {
+                        "text": "Você é um resumidor de textos. Retorne sempre um texto que seja não tão grande e de fácil leitura."
+                    }
+                ]
             },
             "contents": [
-              {
-                "parts": [
-                  {
-                    "text": &prompt
-                  }
-                ]
-              }
+                {
+                    "parts": [
+                        {
+                            "text": &prompt
+                        }
+                    ]
+                }
             ]
-          }
+        }
     );
     
     let client = reqwest::Client::new();
@@ -70,17 +76,15 @@ pub async fn summarize_text(prompt: String, ai: &AI) -> Result<String, anyhow::E
         .await?
     ;
     
-    if let Some(candidates) = response.candidates {
-        if let Some(text) = candidates
-            .get(0)
-            .and_then(|c| c.content.parts.get(0))
+    if let Some(candidates) = response.candidates
+        && let Some(text) = candidates.first()
+            .and_then(|c| c.content.parts.first())
             .and_then(|p| p.text.clone())
-        {
-            return Ok(text)
-        }
+    {
+        return Ok(text)
     } 
     
     Err(
         anyhow::anyhow!("Erro ao se conectar com a IA!")
     )
- }
+}

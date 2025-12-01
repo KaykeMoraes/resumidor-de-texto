@@ -1,11 +1,9 @@
-use std::fs::File;
-use std::io::prelude::*;
+use std::{fs::File, io::{Error, Read}};
 
-
-pub fn read_txt(path: &str) -> std::io::Result<String> {
-    let mut file = File::open(path)?;
+pub fn read_txt(path: &str) -> Result<String, Error> {
+    let mut file = File::open(path).expect("Erro ao abrir arquivo de texto!");
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
     
-    Ok(contents)  
+    Ok(contents)
 }
