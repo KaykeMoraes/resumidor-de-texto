@@ -1,6 +1,8 @@
-mod app;
+mod utils;
+
+use crate::utils::cli::app::run;
 
 #[tokio::main]
 async fn main() {
-    app::run().await;
+    run().await;
 }

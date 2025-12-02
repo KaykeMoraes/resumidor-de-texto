@@ -1,20 +1,23 @@
-FROM rustlang/rust:nightly AS builder 
-WORKDIR /usr/src/app 
+FROM rust:1.91-alpine3.20 AS builder
 
-COPY Cargo.toml Cargo.lock ./ 
+# Dependências essenciais de build no Alpine
+RUN apk add --no-cache musl-dev build-base
+
+WORKDIR /usr/src/app
+
+COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 
-RUN cargo build --release 
+# Compilar diretamente no Alpine (já usa musl)
+RUN cargo build --release
 
-FROM debian:bookworm-slim 
+FROM alpine:3.20
+
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-libssl-dev ca-certificates \ 
-&& rm -rf /var/lib/apt/lists/* 
+# Copiar binário compilado no Alpine (musl)
+COPY --from=builder /usr/src/app/target/release/resumidor-de-pdf .
 
-COPY --from=builder /usr/src/app/target/release/resumidor-de-pdf . 
+COPY .env .env
 
-COPY .env .env 
-
-CMD ["./resumidor-de-pdf"] 
+CMD ["./resumidor-de-pdf"]
