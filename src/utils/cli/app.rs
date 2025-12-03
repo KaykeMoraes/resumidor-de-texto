@@ -2,7 +2,7 @@ use std::io::{Write, stdin, stdout};
 use clear_screen::clear;
 use colored::{Colorize};
 
-use crate::utils::{ai::send_prompt, cli::{path::get_path, wait::wait}, file_handle::{pdf::read_pdf, txt::read_txt}};
+use crate::utils::{ai::send_prompt, cli::{path::get_path, save::save_option, wait::wait}, file_handle::{pdf::read_pdf, txt::read_txt}};
 
 pub async fn run() {
     loop {
@@ -39,7 +39,9 @@ pub async fn run() {
                 
                 match response {
                     Ok(text) => {
-                        println!("\nResposta:\n{}", text)
+                        println!("\nResposta:\n{}", text);
+                        
+                        save_option(&text);
                     }
                     Err(err) => {
                         eprintln!("Erro: {}", err)
@@ -54,7 +56,9 @@ pub async fn run() {
                 
                 match response {
                     Ok(text) => {
-                        println!("\nResposta:\n{}", text)
+                        println!("\nResposta:\n{}", text);
+                        
+                        save_option(&text);
                     }
                     Err(err) => {
                         eprintln!("Erro: {}", err)
@@ -73,7 +77,9 @@ pub async fn run() {
                 
                 match response {
                     Ok(text) => {
-                        println!("\nResposta:\n{}", text)
+                        println!("\nResposta:\n{}", text);
+                        
+                        save_option(&text);
                     }
                     Err(err) => {
                         eprintln!("{}", err)
