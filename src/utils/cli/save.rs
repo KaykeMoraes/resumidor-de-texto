@@ -13,6 +13,7 @@ pub fn save_option(text: &String) {
         if answer.trim().to_ascii_lowercase() == "s" {
             create_md_file(text).expect("Erro ao criar arquivo!");
             println!("Arquivo criado com sucesso!");
+            println!("Seu arquivo foi salvo na pasta Downloads.");
             break;
         } else if answer.trim().to_ascii_lowercase() == "n" {
             break;

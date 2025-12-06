@@ -13,8 +13,6 @@ pub fn create_md_file(text: &String) -> Result<File, Error> {
     
     let mut file = File::create_new(&file_path)?;
     file.write_all(text.as_bytes())?;
-   
-    println!("\nArquivo salvo na pasta Downloads.");
     
     Ok(file)
 }

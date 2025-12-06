@@ -39,6 +39,7 @@ pub async fn run() {
                 
                 match response {
                     Ok(text) => {
+                        let text = send_prompt(&text).await.unwrap();
                         println!("\nResposta:\n{}", text);
                         
                         save_option(&text);
@@ -56,6 +57,7 @@ pub async fn run() {
                 
                 match response {
                     Ok(text) => {
+                        let text = send_prompt(&text).await.unwrap();
                         println!("\nResposta:\n{}", text);
                         
                         save_option(&text);
